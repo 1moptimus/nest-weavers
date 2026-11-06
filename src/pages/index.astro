@@ -1,0 +1,24 @@
+---
+import '../styles.css';
+import { getEntry } from 'astro:content';
+
+// Editable copy lives in src/content/pages/pages.json (edited via /admin).
+const home = await getEntry('pages', 'home');
+if (!home) throw new Error('Missing "home" entry in src/content/pages/pages.json');
+const { heroTitle, heroText } = home.data;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Nest Weavers</title>
+    <meta name="description" content={heroText} />
+  </head>
+  <body>
+    <main>
+      <h1>{heroTitle}</h1>
+      <p>{heroText}</p>
+    </main>
+  </body>
+</html>

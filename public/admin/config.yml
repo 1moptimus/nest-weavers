@@ -1,0 +1,65 @@
+# Decap CMS configuration. Mirrors the Astro content collections in src/content.config.ts.
+# Keep field names identical to the Zod schema; a mismatch means content will fail the build.
+backend:
+  name: github
+  repo: OWNER/REPO # TODO: replace with the real GitHub repo (e.g. nest-weavers/website)
+  branch: main
+  base_url: https://nestweavers.com # OAuth proxy host (Cloudflare Pages Functions)
+  auth_endpoint: api/auth
+
+media_folder: src/assets/uploads # uploads are committed to the repo and optimised at build
+locale: en
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: src/content/projects
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}} ({{year}})"
+    sortable_fields: ["order", "year", "title"]
+    fields:
+      - { label: Title, name: title, widget: string, hint: "Project name shown on the site." }
+      - { label: Summary, name: summary, widget: text, hint: "One or two sentences shown on the project card." }
+      - { label: Location, name: location, widget: string, hint: "City, or city and country." }
+      - { label: Year, name: year, widget: number, value_type: int, min: 1990, max: 2100 }
+      - { label: Category, name: category, widget: string, hint: "e.g. Residential, Commercial, Hospitality." }
+      - label: Cover image
+        name: cover
+        widget: image
+        required: false
+        relative: true
+        hint: "Landscape photo, at least 1600px wide. JPG or PNG, under 5 MB."
+      - label: Gallery
+        name: gallery
+        widget: list
+        required: false
+        field: { label: Image, name: image, widget: image, relative: true }
+      - label: Before and after pairs
+        name: beforeAfter
+        widget: list
+        required: false
+        fields:
+          - { label: Label, name: label, widget: string }
+          - { label: Before, name: before, widget: image, relative: true }
+          - { label: After, name: after, widget: image, relative: true }
+      - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
+      - { label: Hidden from site, name: draft, widget: boolean, default: false, hint: "Tick to hide this project without deleting it." }
+      - { label: Description, name: body, widget: markdown }
+
+  - name: pages
+    label: Page text
+    files:
+      - name: home
+        label: Home page
+        file: src/content/pages/pages.json
+        fields:
+          - name: home
+            label: Home
+            widget: object
+            fields:
+              - { label: Hero title, name: heroTitle, widget: string }
+              - { label: Hero text, name: heroText, widget: text }
