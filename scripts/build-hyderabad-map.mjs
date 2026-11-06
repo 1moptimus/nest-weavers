@@ -71,7 +71,7 @@ for (const el of elements) {
 const path = (d, attrs) => (d.length ? `<path d="${d.join('')}" ${attrs}/>` : '');
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MAP_WIDTH} ${MAP_HEIGHT}" role="img" aria-labelledby="map-title">
   <title id="map-title">Map of Hyderabad showing project locations</title>
-  <rect width="${MAP_WIDTH}" height="${MAP_HEIGHT}" class="map-land"/>
+  <rect width="${MAP_WIDTH}" height="${MAP_HEIGHT}" fill="var(--color-map-land, #EFEAE6)"/>
   <g class="map-water" fill="var(--color-map-water, #A2BFE2)">
     ${path(ways.water, '')}
   </g>
