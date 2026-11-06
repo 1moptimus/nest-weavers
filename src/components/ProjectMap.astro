@@ -142,7 +142,7 @@ const landmarkLabels = landmarks.map((l) => ({ ...l, ...toPercent(l.lat, l.lng) 
   .place--lg {
     font-size: clamp(12px, 1.5cqw, 24px);
     letter-spacing: 0.2em;
-    color: var(--color-accent-brown-dark);
+    color: var(--color-accent-text);
     opacity: 1;
   }
   .place--landmark {
@@ -158,7 +158,7 @@ const landmarkLabels = landmarks.map((l) => ({ ...l, ...toPercent(l.lat, l.lng) 
     flex: none;
     width: clamp(18px, 2cqw, 30px);
     height: auto;
-    color: var(--color-accent-brown-dark);
+    color: var(--color-accent-text);
     background: var(--color-map-land);
     border-radius: 50%;
   }

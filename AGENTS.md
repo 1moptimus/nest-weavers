@@ -40,7 +40,7 @@ docs/             brand + content model notes
 - Portfolio projects and editable page copy live in content collections with a typed schema (`src/content.config.ts`); do not hardcode project data or client-editable text in components.
 - Client-editable content is edited through Decap CMS at `/admin` (`public/admin/config.yml`). Any schema change in `src/content.config.ts` must be mirrored there. Client guide: `docs/editing-guide.md`.
 - Images: use `astro:assets` (`<Image>`/`<Picture>`) with width/height and meaningful `alt`. No unoptimised large images in `public/`.
-- Styling: Tailwind utilities; design tokens (colors, fonts, spacing) as CSS variables in `@theme` in `src/styles.css`. Brand details in `docs/brand.md`.
+- Styling: Tailwind utilities; design tokens (colors, fonts, spacing) as CSS variables in `src/styles.css`. Brand constants live in `@theme`; anything that changes between light and dark mode is a theme token in `:root` / `:root[data-theme='dark']`. **Never hard-code colours in components; use the tokens** so both modes stay in sync. Brand details in `docs/brand.md`.
 - Components: PascalCase files, one component per file, named props interface.
 - No new dependency without a clear reason; prefer platform features and Astro built-ins.
 - Never commit secrets. Use `.env` (git-ignored); document variables in `.env.example`.

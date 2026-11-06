@@ -1,30 +1,171 @@
 @import "tailwindcss";
 
 /*
- * Brand tokens.
+ * Brand constants (identical in both modes).
  * - Brown is measured from the "INTERIORS" lettering in the client's logo file (#926d52).
  * - Sky blue is the brand-guideline swatch (#a2bfe2); the logo's bird wing measures #96bce3. Confirm which to use.
  * - Off-white is read by eye from the brand PDF (p.10); confirm the exact hex with the client before launch.
  */
 @theme {
-  --color-surface: #efeae6; /* warm off-white */
-  --color-ink: #2b2623; /* body text; near-black for contrast */
+  --color-accent-sky: #a2bfe2; /* bird colour; accent only, never small text on light backgrounds */
+  --color-accent-brown: #926d52; /* graphics and large text; fails AA for small text on off-white */
+
+  /* Brand typography: Montserrat (self-hosted via astro.config.mjs) and Times New Roman. */
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Times New Roman', Times, 'Liberation Serif', serif;
+}
+
+/*
+ * Theme tokens. Components use ONLY these (never hard-coded colours), so light and dark mode stay in sync.
+ * Light is the default; dark applies via [data-theme='dark'], set by the inline script in BaseLayout
+ * (saved choice, otherwise the device setting) and the toggle in the navbar.
+ */
+:root {
+  color-scheme: light;
+  --color-surface: #efeae6; /* page background: warm off-white */
+  --color-ink: #2b2623; /* body text */
   --color-ink-muted: #6b625b;
-  --color-accent-sky: #a2bfe2; /* bird colour; use as accent, not text */
-  --color-accent-brown: #926d52; /* large text and graphics only (fails AA for small text on off-white) */
-  --color-accent-brown-dark: #725540; /* darker brown: passes AA for small text on off-white */
   --color-card: #ffffff;
+  --color-field: #ffffff;
+  --color-line: rgb(43 38 35 / 0.12);
+  --color-accent-text: #725540; /* brown that passes AA for small text */
   --color-pin: #926d52;
   --color-pin-outline: #2b2623;
   --color-focus: #2b2623;
-  --color-map-water: #a2bfe2;
+  --card-shadow: 0 1px 2px rgb(43 38 35 / 0.06);
+  --card-shadow-hover: 0 10px 24px rgb(43 38 35 / 0.12);
+
+  /* Map */
   --color-map-land: #efeae6;
   --color-map-road: #d9d2cb;
+  --color-map-water: #a2bfe2;
+
+  /* Hero and footer bands */
+  --color-hero-bg: #e8e1da;
+  --color-hero-ink: #2b2623;
+  --color-hero-text: #4a423c;
+  --color-hero-eyebrow: #725540;
+  --hero-glow: rgb(146 109 82 / 0.16);
+  --color-footer-bg: #e3dbd3;
+  --color-footer-ink: #2b2623;
+  --color-footer-muted: #5e554e;
+  --color-footer-heading: #725540;
+  --color-footer-line: rgb(43 38 35 / 0.15);
+
+  /* Pattern overlay (see .has-pattern) */
+  --pattern-line: #926d52;
+  --pattern-opacity: 0.34;
+  --pattern-opacity-footer: 0.22;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-surface: #0f0e0d;
+  --color-ink: #efeae6;
+  --color-ink-muted: #b4aba2;
+  --color-card: #1b1917;
+  --color-field: #1b1917;
+  --color-line: rgb(239 234 230 / 0.14);
+  --color-accent-text: #cfae8e;
+  --color-pin-outline: #efeae6;
+  --color-focus: #efeae6;
+  --card-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  --card-shadow-hover: 0 10px 24px rgb(0 0 0 / 0.5);
+
+  --color-map-land: #151311;
+  --color-map-road: #2d2924;
+  --color-map-water: #2c4260;
+
+  --color-hero-bg: #0a0a0a;
+  --color-hero-ink: #efeae6;
+  --color-hero-text: rgb(239 234 230 / 0.85);
+  --color-hero-eyebrow: #a2bfe2;
+  --hero-glow: rgb(146 109 82 / 0.28);
+  --color-footer-bg: #0a0a0a;
+  --color-footer-ink: #efeae6;
+  --color-footer-muted: rgb(239 234 230 / 0.7);
+  --color-footer-heading: #a2bfe2;
+  --color-footer-line: rgb(239 234 230 / 0.15);
+
+  --pattern-opacity: 0.24;
+  --pattern-opacity-footer: 0.16;
 }
 
 body {
   background: var(--color-surface);
   color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/*
+ * The client's cube pattern as an overlay. pattern-lines.png is lines only (transparent elsewhere), recovered from
+ * the client's dark-mode screenshot, so it is used as a mask: line colour and strength come from the theme tokens
+ * above and the background behind it is whatever the element's own background is.
+ */
+.has-pattern {
+  position: relative;
+  isolation: isolate;
+}
+.has-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--pattern-line);
+  opacity: var(--pattern-opacity);
+  -webkit-mask-image: url('./assets/brand/pattern-lines.png');
+  mask-image: url('./assets/brand/pattern-lines.png');
+  -webkit-mask-size: 252px 175px;
+  mask-size: 252px 175px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+/* Optional: fade the pattern out toward the edges of the element. */
+.has-pattern--fade::before {
+  -webkit-mask-image: url('./assets/brand/pattern-lines.png'), radial-gradient(ellipse at center, #000 30%, transparent 100%);
+  mask-image: url('./assets/brand/pattern-lines.png'), radial-gradient(ellipse at center, #000 30%, transparent 100%);
+  -webkit-mask-size: 252px 175px, 100% 100%;
+  mask-size: 252px 175px, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* Content cards: themed surface, with a brown top rule; lift slightly on hover when motion is allowed. */
+.card {
+  background: var(--color-card);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border-top: 2px solid rgb(146 109 82 / 0.55);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow-hover);
+  }
+  /* Staggered entrance: set --d (delay) inline. */
+  .rise {
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /*
@@ -49,6 +190,25 @@ body {
   input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"]),
   textarea,
   [contenteditable="true"] {
+    cursor: text;
+  }
+  /* Dark mode: the same bird with a light outline, so it stays visible on dark backgrounds. */
+  :root[data-theme='dark'] {
+    cursor: url("/cursor/bird-light.png") 1 18, auto;
+    cursor: image-set(url("/cursor/bird-light.png") 1x, url("/cursor/bird-light@2x.png") 2x) 1 18, auto;
+  }
+  :root[data-theme='dark'] a,
+  :root[data-theme='dark'] button,
+  :root[data-theme='dark'] summary,
+  :root[data-theme='dark'] select,
+  :root[data-theme='dark'] label,
+  :root[data-theme='dark'] [role="button"] {
+    cursor: url("/cursor/bird-light.png") 1 18, pointer;
+    cursor: image-set(url("/cursor/bird-light.png") 1x, url("/cursor/bird-light@2x.png") 2x) 1 18, pointer;
+  }
+  :root[data-theme='dark'] input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"]),
+  :root[data-theme='dark'] textarea,
+  :root[data-theme='dark'] [contenteditable="true"] {
     cursor: text;
   }
 }

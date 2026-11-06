@@ -5,7 +5,7 @@ import { NAV, SOCIAL, SITE, CONTACT } from '../lib/site.js';
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
+<footer class="site-footer has-pattern">
   <div class="site-footer__grid">
     <div>
       <p class="site-footer__brand">{SITE.name}</p>
@@ -34,7 +34,7 @@ const year = new Date().getFullYear();
       <h2>Contact</h2>
       <address>
         <p>{CONTACT.address}</p>
-        <p>{CONTACT.phone}</p>
+        {CONTACT.phones.map((n) => <p><a href={`tel:${n.replace(/[^+\d]/g, '')}`}>{n}</a></p>)}
         <p>{CONTACT.email}</p>
         <p>{CONTACT.hours}</p>
       </address>
@@ -45,11 +45,12 @@ const year = new Date().getFullYear();
 
 <style>
   .site-footer {
-    margin-top: 4rem;
-    padding: 3rem 0 1.5rem;
-    background: #ffffff;
-    border-top: 1px solid rgb(43 38 35 / 0.1);
-    color: var(--color-ink);
+    margin-top: 5rem;
+    padding: 3.5rem 0 1.5rem;
+    border-top: 1px solid var(--color-accent-brown);
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-ink);
+    --pattern-opacity: var(--pattern-opacity-footer);
   }
   .site-footer__grid {
     display: grid;
@@ -59,20 +60,20 @@ const year = new Date().getFullYear();
     padding-inline: 1rem;
   }
   .site-footer__brand {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 1.5rem;
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
   }
   .site-footer__tagline {
     margin-top: 0.25rem;
-    color: var(--color-ink-muted);
+    color: var(--color-footer-muted);
     font-style: italic;
   }
   .site-footer h2 {
     margin-bottom: 0.75rem;
     font-size: 0.8125rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-accent-brown-dark);
+    color: var(--color-footer-heading);
   }
   ul {
     list-style: none;
@@ -85,8 +86,13 @@ const year = new Date().getFullYear();
     color: inherit;
     text-decoration: none;
   }
-  .site-footer nav a:hover {
+  .site-footer nav a:hover,
+  address a:hover {
+    color: var(--color-footer-heading);
     text-decoration: underline;
+  }
+  address a {
+    color: inherit;
   }
   address {
     font-style: normal;
@@ -107,8 +113,8 @@ const year = new Date().getFullYear();
     color: inherit;
   }
   .site-footer__social a:hover {
-    color: var(--color-accent-brown-dark);
-    background: rgb(146 109 82 / 0.1);
+    color: var(--color-footer-heading);
+    background: var(--color-footer-line);
   }
   .site-footer a:focus-visible {
     outline: 3px solid var(--color-focus);
@@ -118,9 +124,9 @@ const year = new Date().getFullYear();
     max-width: 72rem;
     margin: 2.5rem auto 0;
     padding: 1rem 1rem 0;
-    border-top: 1px solid rgb(43 38 35 / 0.1);
+    border-top: 1px solid var(--color-footer-line);
     font-size: 0.8125rem;
-    color: var(--color-ink-muted);
+    color: var(--color-footer-muted);
   }
   @media (min-width: 768px) {
     .site-footer__grid {

@@ -77,12 +77,62 @@ collections:
             fields:
               - { label: Page title, name: heroTitle, widget: string }
               - { label: Intro text, name: heroText, widget: text }
+              - label: Content sections
+                name: sections
+                widget: list
+                required: false
+                summary: "{{fields.heading}}"
+                hint: "Blocks of content shown under the intro. Add, remove or reorder them."
+                fields:
+                  - { label: Heading, name: heading, widget: string }
+                  - { label: Intro text, name: intro, widget: text, required: false }
+                  - label: Layout
+                    name: style
+                    widget: select
+                    options:
+                      - { label: Cards, value: cards }
+                      - { label: Numbered steps, value: steps }
+                      - { label: Bullet list, value: list }
+                    default: cards
+                  - label: Items
+                    name: items
+                    widget: list
+                    required: false
+                    summary: "{{fields.title}}"
+                    fields:
+                      - { label: Title, name: title, widget: string }
+                      - { label: Text, name: text, widget: text, required: false }
           - name: about-us
             label: About Us
             widget: object
             fields:
               - { label: Page title, name: heroTitle, widget: string }
               - { label: Intro text, name: heroText, widget: text }
+              - label: Content sections
+                name: sections
+                widget: list
+                required: false
+                summary: "{{fields.heading}}"
+                hint: "Blocks of content shown under the intro. Add, remove or reorder them."
+                fields:
+                  - { label: Heading, name: heading, widget: string }
+                  - { label: Intro text, name: intro, widget: text, required: false }
+                  - label: Layout
+                    name: style
+                    widget: select
+                    options:
+                      - { label: Cards, value: cards }
+                      - { label: Numbered steps, value: steps }
+                      - { label: Bullet list, value: list }
+                    default: cards
+                  - label: Items
+                    name: items
+                    widget: list
+                    required: false
+                    summary: "{{fields.title}}"
+                    fields:
+                      - { label: Title, name: title, widget: string }
+                      - { label: Text, name: text, widget: text, required: false }
           - name: gallery
             label: Gallery
             widget: object
@@ -95,3 +145,28 @@ collections:
             fields:
               - { label: Page title, name: heroTitle, widget: string }
               - { label: Intro text, name: heroText, widget: text }
+              - label: Content sections
+                name: sections
+                widget: list
+                required: false
+                summary: "{{fields.heading}}"
+                hint: "Blocks of content shown under the intro. Add, remove or reorder them."
+                fields:
+                  - { label: Heading, name: heading, widget: string }
+                  - { label: Intro text, name: intro, widget: text, required: false }
+                  - label: Layout
+                    name: style
+                    widget: select
+                    options:
+                      - { label: Cards, value: cards }
+                      - { label: Numbered steps, value: steps }
+                      - { label: Bullet list, value: list }
+                    default: cards
+                  - label: Items
+                    name: items
+                    widget: list
+                    required: false
+                    summary: "{{fields.title}}"
+                    fields:
+                      - { label: Title, name: title, widget: string }
+                      - { label: Text, name: text, widget: text, required: false }

@@ -8,7 +8,7 @@ Use this to update projects, photos and page text every few months. You do not n
 
 ## Editing
 - **Projects**: open *Projects*, pick one or click *New Project*. Fill in title, summary, location, year, category and the photos. Lower *Display order* numbers appear first. Tick *Hidden from site* to take a project off the website without deleting it.
-- **Page titles and intro text** (Home, Why Us, About Us, Gallery, Contact Us): open *Page text*.
+- **Page titles, intro text and content blocks** (Home, Why Us, About Us, Gallery, Contact Us): open *Page text*. Under *Content sections* you can add, remove and reorder blocks, and choose whether each shows as cards, numbered steps or a bullet list.
 - **Photos**: upload through the image field. Use landscape JPG or PNG files, at least 1600px wide, under 5 MB. The site resizes them automatically.
 
 ## Publishing

@@ -26,11 +26,20 @@ const projects = defineCollection({
 });
 
 // Editable page copy: one entry per page, keyed by id (e.g. "home") in src/content/pages/pages.json.
+// Pages may also carry content sections (heading, intro, items) rendered by src/components/PageSections.astro.
+const pageSection = z.object({
+  heading: z.string(),
+  intro: z.string().optional(),
+  style: z.enum(['cards', 'steps', 'list']).default('cards'),
+  items: z.array(z.object({ title: z.string(), text: z.string().optional() })).default([]),
+});
+
 const pages = defineCollection({
   loader: file('./src/content/pages/pages.json'),
   schema: z.object({
     heroTitle: z.string(),
     heroText: z.string(),
+    sections: z.array(pageSection).default([]),
   }),
 });
 

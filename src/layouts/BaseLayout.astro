@@ -1,6 +1,7 @@
 ---
 // Page shell: head metadata (title, description, Open Graph), navbar, main landmark and footer.
 import '../styles.css';
+import { Font } from 'astro:assets';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../lib/site.js';
@@ -27,7 +28,21 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
     {canonical && <link rel="canonical" href={canonical} />}
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#efeae6" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#efeae6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f0e0d" media="(prefers-color-scheme: dark)" />
+    <!-- Set the theme before first paint (saved choice, else the device setting) so there is no flash. -->
+    <script is:inline>
+      (function () {
+        var theme = 'light';
+        try {
+          var saved = localStorage.getItem('theme');
+          theme = saved === 'light' || saved === 'dark' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        } catch (e) {}
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <Font cssVariable="--font-montserrat" preload />
 
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:type" content="website" />

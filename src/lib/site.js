@@ -17,14 +17,15 @@ export const NAV = [
 
 /** @type {{ name: string, href: string, icon: 'instagram' | 'youtube' }[]} */
 export const SOCIAL = [
-  { name: 'Instagram', href: 'https://www.instagram.com/nestweaversgroup', icon: 'instagram' },
+  { name: 'Instagram', href: 'https://www.instagram.com/nestweavers_interiors/', icon: 'instagram' },
   { name: 'YouTube', href: 'https://www.youtube.com/@nestweavers3377', icon: 'youtube' },
 ];
 
-// PLACEHOLDERS: replace with the client's real details before launch.
+// Address, email and hours are PLACEHOLDERS: replace with the client's real details before launch.
 export const CONTACT = {
   address: '[Placeholder: studio address], Hyderabad',
-  phone: '[Placeholder: phone number]',
+  // From the client's pitch deck.
+  phones: ['+91-8919487650', '+91-9398676968'],
   email: '[Placeholder: email address]',
   hours: '[Placeholder: opening hours]',
 };

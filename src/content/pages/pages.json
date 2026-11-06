@@ -1,22 +1,230 @@
 {
   "home": {
-    "heroTitle": "Nest Weavers",
-    "heroText": "Placeholder: short introduction to the firm. Replace with approved copy."
+    "heroTitle": "Let's Bring Life to your Spaces.",
+    "heroText": "Nest Weavers is a Hyderabad-based interior design and execution partner. One coordinated team, from planning through handover."
   },
   "why-us": {
     "heroTitle": "Why Us",
-    "heroText": "Placeholder: a short sentence on what sets Nest Weavers apart. Replace with approved copy."
+    "heroText": "Fewer surprises, clearer decisions and accountable execution.",
+    "sections": [
+      {
+        "heading": "What you can expect",
+        "style": "cards",
+        "items": [
+          {
+            "title": "One coordinated team",
+            "text": "Design, selections and execution managed through a defined process."
+          },
+          {
+            "title": "Design before execution",
+            "text": "Layout planning, visual direction and 3D presentations where included in the agreed scope."
+          },
+          {
+            "title": "Clear specifications",
+            "text": "Materials, finishes, inclusions and exclusions documented before work proceeds."
+          },
+          {
+            "title": "Progress you can see",
+            "text": "Scheduled progress updates with site photographs and videos."
+          },
+          {
+            "title": "Milestone-based coordination",
+            "text": "Decisions, approvals and payments linked to agreed project stages."
+          }
+        ]
+      },
+      {
+        "heading": "How we work",
+        "intro": "A practical process keeps the project moving. The exact sequence and deliverables are confirmed in your project proposal and agreement.",
+        "style": "steps",
+        "items": [
+          {
+            "title": "Discovery & brief",
+            "text": "We understand your property, family requirements, preferred style, priorities, timeline and investment range through a video consultation."
+          },
+          {
+            "title": "Site review & planning",
+            "text": "We review available drawings, dimensions, site conditions and photographs. A physical site visit or measurement exercise is arranged where required."
+          },
+          {
+            "title": "Design & specification",
+            "text": "We develop the agreed design direction, layouts, material palette and relevant 3D views, then document selections for approval."
+          },
+          {
+            "title": "Costing & agreement",
+            "text": "You receive a detailed scope, specifications, exclusions, payment milestones, target schedule and variation process before execution."
+          },
+          {
+            "title": "Execution & updates",
+            "text": "Our team coordinates the agreed work and shares progress updates. Key decisions and changes are recorded for your approval."
+          },
+          {
+            "title": "Inspection & handover",
+            "text": "We review completed work against the agreed scope, list pending corrections and coordinate handover after applicable closure requirements."
+          }
+        ]
+      },
+      {
+        "heading": "Confidence comes from what is documented",
+        "intro": "Trust should not depend on verbal assurances. Before work begins, we aim to establish a clear record of decisions and responsibilities.",
+        "style": "cards",
+        "items": [
+          {
+            "title": "Project scope",
+            "text": "Written list of included works, exclusions, client-supplied items and assumptions."
+          },
+          {
+            "title": "Materials & finishes",
+            "text": "Specifications, brands or approved equivalents, finish references and sample approvals as applicable."
+          },
+          {
+            "title": "Cost & payments",
+            "text": "Itemised or stage-wise costing, taxes, payment milestones and written approval for variations."
+          },
+          {
+            "title": "Progress visibility",
+            "text": "Agreed cadence for photographs, videos, progress notes and decisions requiring your input."
+          },
+          {
+            "title": "Quality & handover",
+            "text": "Review against the agreed scope, punch-list of pending items and handover documentation where applicable."
+          }
+        ]
+      },
+      {
+        "heading": "For NRIs and overseas homeowners",
+        "intro": "Being overseas should not mean being disconnected from your home project. We are a Hyderabad-based interior design and execution partner for homeowners who want one coordinated team from planning through handover.",
+        "style": "cards",
+        "items": [
+          {
+            "title": "Video consultation",
+            "text": "We begin with a video consultation to understand your property, priorities, timeline and investment range."
+          },
+          {
+            "title": "Updates from the site",
+            "text": "Scheduled progress updates with site photographs and videos keep you informed from thousands of miles away."
+          },
+          {
+            "title": "Real projects, real references",
+            "text": "We can share relevant completed work, project photographs and client references with permission."
+          }
+        ]
+      }
+    ]
   },
   "about-us": {
     "heroTitle": "About Us",
-    "heroText": "Placeholder: the story of the studio in a sentence or two. Replace with approved copy."
+    "heroText": "Placeholder: the story of the studio in a sentence or two. Replace with approved copy.",
+    "sections": [
+      {
+        "heading": "Who we work with",
+        "style": "cards",
+        "items": [
+          {
+            "title": "Premium apartments",
+            "text": "For owners preparing for possession, moving into a new apartment, or upgrading an existing home. We plan complete interiors around your space, needs and budget."
+          },
+          {
+            "title": "Luxury villas",
+            "text": "For families building or completing a villa in Hyderabad who want a considered design language, coordinated execution and close attention to detailing."
+          }
+        ]
+      },
+      {
+        "heading": "Spaces we can bring together",
+        "intro": "The final scope is tailored to your property. Depending on the agreed package, project requirements and site conditions, services may include:",
+        "style": "list",
+        "items": []
+      },
+      {
+        "heading": "Design & planning",
+        "style": "list",
+        "items": [
+          {
+            "title": "Space planning and layouts"
+          },
+          {
+            "title": "Design concepts and 3D views"
+          },
+          {
+            "title": "Colour and material palette"
+          },
+          {
+            "title": "Lighting and ceiling coordination"
+          },
+          {
+            "title": "Furniture and finish selections"
+          }
+        ]
+      },
+      {
+        "heading": "Interior execution",
+        "style": "list",
+        "items": [
+          {
+            "title": "Modular kitchen and storage"
+          },
+          {
+            "title": "Wardrobes and bedroom interiors"
+          },
+          {
+            "title": "Living and dining areas"
+          },
+          {
+            "title": "False ceiling and lighting works"
+          },
+          {
+            "title": "Wall finishes and feature details"
+          },
+          {
+            "title": "Furniture and accessories coordination"
+          }
+        ]
+      },
+      {
+        "heading": "Not a one-size-fits-all package",
+        "intro": "We first understand the property and your priorities. Then we define what is included, what is excluded, which items are client-supplied, and what requires specialist vendors or separate approvals. This avoids vague promises and makes the budget easier to manage.",
+        "style": "list",
+        "items": []
+      }
+    ]
   },
   "gallery": {
     "heroTitle": "Gallery",
-    "heroText": "Placeholder: a line introducing the portfolio. Replace with approved copy."
+    "heroText": "Real projects. Real references. We can share relevant completed work, project photographs and client references with permission."
   },
   "contact-us": {
     "heroTitle": "Contact Us",
-    "heroText": "Placeholder: an invitation to get in touch. Replace with approved copy."
+    "heroText": "Start with a conversation. Share your property details, drawings or current site photographs, and the outcome you want to achieve.",
+    "sections": [
+      {
+        "heading": "Before we talk",
+        "intro": "To help us prepare for your consultation, keep these ready if available:",
+        "style": "list",
+        "items": [
+          {
+            "title": "Floor plan"
+          },
+          {
+            "title": "Approximate area"
+          },
+          {
+            "title": "Site stage"
+          },
+          {
+            "title": "Reference images"
+          },
+          {
+            "title": "Expected timeline"
+          }
+        ]
+      },
+      {
+        "heading": "Good to know",
+        "intro": "Final scope, price, schedule and responsibilities are confirmed in a written proposal and agreement.",
+        "style": "list",
+        "items": []
+      }
+    ]
   }
 }

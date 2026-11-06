@@ -1,0 +1,77 @@
+---
+// Renders a page's editable content sections (from the "pages" collection) as cards, numbered steps or a list.
+interface Item {
+  title: string;
+  text?: string;
+}
+interface Section {
+  heading: string;
+  intro?: string;
+  style: 'cards' | 'steps' | 'list';
+  items: Item[];
+}
+interface Props {
+  sections: Section[];
+}
+
+const { sections } = Astro.props;
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+import SectionHeading from './SectionHeading.astro';
+---
+
+{
+  sections.map((section) => {
+    const id = `section-${slug(section.heading)}`;
+    return (
+      <section aria-labelledby={id} class="pt-14 sm:pt-20">
+        <SectionHeading id={id} title={section.heading} intro={section.intro} />
+        <div class="mx-auto mt-8 max-w-6xl px-4 sm:mt-10 sm:px-6">
+
+        {section.items.length > 0 && section.style === 'cards' && (
+          <ul class="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {section.items.map((item) => (
+              <li class="card">
+                <h3 class="text-lg sm:text-xl">{item.title}</h3>
+                {item.text && <p class="mt-2">{item.text}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {section.items.length > 0 && section.style === 'steps' && (
+          <ol class="grid gap-4 sm:gap-6 md:grid-cols-2">
+            {section.items.map((item, i) => (
+              <li class="card flex gap-4">
+                <span
+                  class="font-serif text-3xl leading-none text-[var(--color-accent-brown)]"
+                  aria-hidden="true"
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 class="text-lg sm:text-xl">{item.title}</h3>
+                  {item.text && <p class="mt-2">{item.text}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+
+        {section.items.length > 0 && section.style === 'list' && (
+          <ul class="mx-auto grid max-w-3xl gap-x-8 gap-y-3 sm:grid-cols-2">
+            {section.items.map((item) => (
+              <li class="flex gap-3">
+                <span class="mt-2 size-2 flex-none rounded-full bg-[var(--color-accent-brown)]" aria-hidden="true" />
+                <span>
+                  {item.title}
+                  {item.text && <span class="text-[var(--color-ink-muted)]"> {item.text}</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+        </div>
+      </section>
+    );
+  })
+}

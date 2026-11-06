@@ -1,7 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageIntro from '../components/PageIntro.astro';
+import PageHero from '../components/PageHero.astro';
 import PlaceholderImage from '../components/PlaceholderImage.astro';
 
 const page = await getEntry('pages', 'gallery');
@@ -13,8 +13,8 @@ const tiles = Array.from({ length: 6 }, (_, i) => `Placeholder photo ${i + 1}`);
 ---
 
 <BaseLayout title={heroTitle} description={heroText}>
-  <PageIntro title={heroTitle} text={heroText} />
-  <section class="mx-auto max-w-6xl px-4 sm:px-6" aria-label="Project photos">
+  <PageHero title={heroTitle} text={heroText} />
+  <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6 sm:pt-20" aria-label="Project photos">
     <ul class="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
       {tiles.map((label) => <li><PlaceholderImage label={label} /></li>)}
     </ul>

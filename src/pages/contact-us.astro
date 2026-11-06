@@ -1,35 +1,36 @@
 ---
 import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageIntro from '../components/PageIntro.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSections from '../components/PageSections.astro';
 import { CONTACT } from '../lib/site.js';
 
 const page = await getEntry('pages', 'contact-us');
 if (!page) throw new Error('Missing "contact-us" entry in src/content/pages/pages.json');
-const { heroTitle, heroText } = page.data;
+const { heroTitle, heroText, sections } = page.data;
 
 // The form posts to a third-party endpoint (no backend). Set PUBLIC_FORM_ENDPOINT in .env / Cloudflare Pages.
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined;
 
 const field =
-  'mt-1 w-full rounded-md border border-[var(--color-ink-muted)] bg-white px-3 py-2.5 text-base focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]';
+  'mt-1 w-full rounded-md border border-[var(--color-ink-muted)] bg-[var(--color-field)] px-3 py-2.5 text-base text-[var(--color-ink)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]';
 ---
 
 <BaseLayout title={heroTitle} description={heroText}>
-  <PageIntro title={heroTitle} text={heroText} />
-  <section class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 md:grid-cols-2 md:gap-12">
+  <PageHero title={heroTitle} text={heroText} />
+  <section class="mx-auto grid max-w-6xl gap-10 px-4 pt-14 sm:px-6 sm:pt-20 md:grid-cols-2 md:gap-12">
     <div>
-      <h2 class="text-xl sm:text-2xl">Studio details</h2>
+      <h2 class="font-serif text-2xl sm:text-3xl">Studio details</h2>
       <address class="mt-4 grid gap-2 not-italic">
         <p>{CONTACT.address}</p>
-        <p>{CONTACT.phone}</p>
+        {CONTACT.phones.map((n) => <p><a href={`tel:${n.replace(/[^+\d]/g, '')}`} class="underline-offset-4 hover:underline">{n}</a></p>)}
         <p>{CONTACT.email}</p>
         <p>{CONTACT.hours}</p>
       </address>
     </div>
 
     <form method="post" action={endpoint} class="grid gap-4">
-      <h2 class="text-xl sm:text-2xl">Send us a message</h2>
+      <h2 class="font-serif text-2xl sm:text-3xl">Send us a message</h2>
       <label class="block">
         <span class="text-sm">Your name</span>
         <input class={field} type="text" name="name" autocomplete="name" required />
@@ -62,4 +63,5 @@ const field =
       }
     </form>
   </section>
+  <PageSections sections={sections} />
 </BaseLayout>
