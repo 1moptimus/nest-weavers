@@ -1,91 +1,222 @@
 ---
-// Hyderabad map with one pin per published project. Server-rendered, no JS needed.
-// Pins are real links to the project's entry in the list below the map (#slug).
+// Full-width Hyderabad map: one pin per published project plus decorative areas and landmarks.
+// Server-rendered, no JS needed for pins. On narrow screens the map keeps a readable size and scrolls sideways.
 import type { CollectionEntry } from 'astro:content';
 import mapSvg from '../assets/hyderabad-map.svg?raw';
-import { toPercent } from '../lib/mapProjection.js';
+import MapIcon from './MapIcon.astro';
+import { MAP_WIDTH, MAP_HEIGHT, toPercent } from '../lib/mapProjection.js';
+import { areas, landmarks } from '../lib/hyderabadPlaces.js';
 
 interface Props {
   projects: CollectionEntry<'projects'>[];
 }
 
 const { projects } = Astro.props;
+
 const pins = projects.map((p) => ({
   id: p.id,
   title: p.data.title,
-  summary: p.data.summary,
   place: p.data.area ? `${p.data.area}, ${p.data.location}` : p.data.location,
   ...toPercent(p.data.coordinates.lat, p.data.coordinates.lng),
 }));
+
+const areaLabels = areas.map((a) => ({ ...a, ...toPercent(a.lat, a.lng) }));
+const landmarkLabels = landmarks.map((l) => ({ ...l, ...toPercent(l.lat, l.lng) }));
 ---
 
 <figure class="project-map">
-  <div class="project-map__canvas">
-    <Fragment set:html={mapSvg} />
-    {
-      pins.map((pin) => (
-        <a
-          class="project-map__pin"
-          href={`#${pin.id}`}
-          style={`left:${pin.left}%;top:${pin.top}%`}
-          aria-label={`${pin.title}, ${pin.place}`}
-        >
-          <span class="project-map__card" aria-hidden="true">
-            <strong>{pin.title}</strong>
-            <span>{pin.place}</span>
+  <div
+    class="project-map__scroller"
+    role="region"
+    aria-label="Map of Hyderabad with our project locations. Scroll sideways to explore."
+    tabindex="0"
+  >
+    <div class="project-map__canvas" style={`aspect-ratio:${MAP_WIDTH}/${MAP_HEIGHT}`}>
+      <Fragment set:html={mapSvg} />
+
+      {
+        areaLabels.map((a) => (
+          <span
+            class={`place place--area ${a.size === 'lg' ? 'place--lg' : ''}`}
+            style={`left:${a.left}%;top:${a.top}%;--dx:${a.dx ?? 0}em;--dy:${a.dy ?? 0}em`}
+            aria-hidden="true"
+          >
+            {a.name}
           </span>
-        </a>
-      ))
-    }
+        ))
+      }
+
+      {
+        landmarkLabels.map((l) => (
+          <span
+            class={`place place--landmark place--${l.place}`}
+            style={`left:${l.left}%;top:${l.top}%`}
+            aria-hidden="true"
+          >
+            <MapIcon name={l.icon} />
+            <span class="place__name">{l.name}</span>
+          </span>
+        ))
+      }
+
+      {
+        pins.map((pin) => (
+          <a
+            class="project-map__pin"
+            href={`#${pin.id}`}
+            style={`left:${pin.left}%;top:${pin.top}%`}
+            aria-label={`${pin.title}, ${pin.place}`}
+          >
+            <span class="project-map__dot" aria-hidden="true" />
+            <span class="project-map__card" aria-hidden="true">
+              <strong>{pin.title}</strong>
+              <span>{pin.place}</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
   </div>
-  <figcaption class="project-map__credit">
-    Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors
+  <figcaption class="project-map__foot">
+    <span class="project-map__hint">Drag sideways to explore the city</span>
+    <span>
+      Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors
+    </span>
   </figcaption>
 </figure>
+
+<script>
+  // On narrow screens the map scrolls sideways: start centred on the projects (or the city if there are none).
+  document.querySelectorAll<HTMLElement>('.project-map__scroller').forEach((el) => {
+    const pins = Array.from(el.querySelectorAll<HTMLElement>('.project-map__pin'));
+    const target = pins.length
+      ? pins.reduce((sum, pin) => sum + pin.offsetLeft, 0) / pins.length
+      : el.scrollWidth / 2;
+    el.scrollLeft = Math.max(0, target - el.clientWidth / 2);
+  });
+</script>
 
 <style>
   .project-map {
     margin: 0;
   }
+  /* Full-bleed: the parent places this outside the page's max-width container. */
+  .project-map__scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    background: var(--color-map-land);
+  }
+  .project-map__scroller:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: -3px;
+  }
   .project-map__canvas {
     position: relative;
-    width: 100%;
-    max-width: 1000px;
-    margin-inline: auto;
+    /* Never narrower than a size at which labels stay readable; wider screens simply scale up. */
+    width: max(100%, 1200px);
+    container-type: inline-size;
   }
   .project-map__canvas :global(svg) {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
   }
+
+  /* Labels: sized from the canvas width so they scale with the map. */
+  .place {
+    position: absolute;
+    pointer-events: none;
+    color: var(--color-ink-muted);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .place--area {
+    transform: translate(calc(-50% + var(--dx, 0em)), calc(-50% + var(--dy, 0em)));
+    font-size: clamp(10px, 0.8cqw, 14px);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  .place--lg {
+    font-size: clamp(12px, 1.5cqw, 24px);
+    letter-spacing: 0.2em;
+    color: var(--color-accent-brown-dark);
+    opacity: 1;
+  }
+  .place--landmark {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    font-size: clamp(11px, 1.05cqw, 17px);
+    color: var(--color-ink);
+  }
+  .place--landmark :global(.map-icon) {
+    flex: none;
+    width: clamp(18px, 2cqw, 30px);
+    height: auto;
+    color: var(--color-accent-brown-dark);
+    background: var(--color-map-land);
+    border-radius: 50%;
+  }
+  .place--right {
+    transform: translate(-0.9em, -50%);
+  }
+  .place--left {
+    flex-direction: row-reverse;
+    transform: translate(calc(-100% + 0.9em), -50%);
+  }
+  .place--above {
+    flex-direction: column-reverse;
+    transform: translate(-50%, -100%);
+  }
+  .place--below {
+    flex-direction: column;
+    transform: translate(-50%, 0);
+  }
+
+  /* Pins: 44px tap target, smaller visible dot. */
   .project-map__pin {
     position: absolute;
-    transform: translate(-50%, -100%);
-    /* 44px minimum tap target, visual pin is smaller */
+    z-index: 2;
+    transform: translate(-50%, -50%);
     width: 44px;
     height: 44px;
     display: grid;
     place-items: center;
+  }
+  .project-map__dot {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: var(--color-pin);
+    background: radial-gradient(circle, var(--color-accent-sky) 0 28%, var(--color-pin) 30%);
     border: 2px solid var(--color-pin-outline);
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+    transition: transform 0.2s ease;
+  }
+  .project-map__pin:hover .project-map__dot,
+  .project-map__pin:focus-visible .project-map__dot {
+    transform: scale(1.25);
   }
   .project-map__pin:focus-visible {
     outline: 3px solid var(--color-focus);
-    outline-offset: 3px;
+    outline-offset: -2px;
+    border-radius: 50%;
   }
   .project-map__card {
     position: absolute;
-    bottom: calc(100% + 8px);
+    bottom: calc(100% - 4px);
     left: 50%;
     transform: translateX(-50%);
     min-width: 12rem;
     padding: 0.5rem 0.75rem;
-    background: var(--color-surface);
+    background: var(--color-card);
     color: var(--color-ink);
     border-radius: 0.5rem;
-    box-shadow: 0 4px 16px rgb(0 0 0 / 0.15);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
     display: none;
     font-size: 0.875rem;
     text-align: left;
@@ -93,15 +224,27 @@ const pins = projects.map((p) => ({
   }
   .project-map__pin:hover .project-map__card,
   .project-map__pin:focus-visible .project-map__card {
-    display: block;
+    display: grid;
   }
-  .project-map__credit {
+
+  .project-map__foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 1rem 0;
     font-size: 0.75rem;
     color: var(--color-ink-muted);
-    text-align: right;
-    margin-top: 0.5rem;
   }
-  .project-map__credit a {
+  .project-map__foot a {
     color: inherit;
+  }
+  /* The scroll hint only matters when the map is wider than the screen. */
+  @media (min-width: 1200px) {
+    .project-map__hint {
+      display: none;
+    }
+    .project-map__foot {
+      justify-content: flex-end;
+    }
   }
 </style>

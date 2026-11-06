@@ -1,16 +1,20 @@
 @import "tailwindcss";
 
 /*
- * Brand tokens. Values are PROVISIONAL, read by eye from the brand PDF (p.10 colour swatches).
- * Confirm the exact hex codes with the client before launch.
+ * Brand tokens.
+ * - Brown is measured from the "INTERIORS" lettering in the client's logo file (#926d52).
+ * - Sky blue is the brand-guideline swatch (#a2bfe2); the logo's bird wing measures #96bce3. Confirm which to use.
+ * - Off-white is read by eye from the brand PDF (p.10); confirm the exact hex with the client before launch.
  */
 @theme {
   --color-surface: #efeae6; /* warm off-white */
   --color-ink: #2b2623; /* body text; near-black for contrast */
   --color-ink-muted: #6b625b;
   --color-accent-sky: #a2bfe2; /* bird colour; use as accent, not text */
-  --color-accent-brown: #90775a; /* large text and graphics only (fails AA for small text on off-white) */
-  --color-pin: #90775a;
+  --color-accent-brown: #926d52; /* large text and graphics only (fails AA for small text on off-white) */
+  --color-accent-brown-dark: #725540; /* darker brown: passes AA for small text on off-white */
+  --color-card: #ffffff;
+  --color-pin: #926d52;
   --color-pin-outline: #2b2623;
   --color-focus: #2b2623;
   --color-map-water: #a2bfe2;
@@ -21,4 +25,30 @@
 body {
   background: var(--color-surface);
   color: var(--color-ink);
+}
+
+/*
+ * Bird cursor: the hummingbird from the logo replaces the pointer on devices with a mouse or trackpad.
+ * Hotspot (1, 18) is the beak tip. Touch devices have no cursor, so they are unaffected.
+ * Text fields keep the native text cursor so editing stays usable; if an image fails to load the browser falls back.
+ */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    cursor: url("/cursor/bird.png") 1 18, auto;
+    cursor: image-set(url("/cursor/bird.png") 1x, url("/cursor/bird@2x.png") 2x) 1 18, auto;
+  }
+  a,
+  button,
+  summary,
+  select,
+  label,
+  [role="button"] {
+    cursor: url("/cursor/bird.png") 1 18, pointer;
+    cursor: image-set(url("/cursor/bird.png") 1x, url("/cursor/bird@2x.png") 2x) 1 18, pointer;
+  }
+  input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"]),
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+  }
 }

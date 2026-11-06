@@ -2,5 +2,21 @@
   "home": {
     "heroTitle": "Nest Weavers",
     "heroText": "Placeholder: short introduction to the firm. Replace with approved copy."
+  },
+  "why-us": {
+    "heroTitle": "Why Us",
+    "heroText": "Placeholder: a short sentence on what sets Nest Weavers apart. Replace with approved copy."
+  },
+  "about-us": {
+    "heroTitle": "About Us",
+    "heroText": "Placeholder: the story of the studio in a sentence or two. Replace with approved copy."
+  },
+  "gallery": {
+    "heroTitle": "Gallery",
+    "heroText": "Placeholder: a line introducing the portfolio. Replace with approved copy."
+  },
+  "contact-us": {
+    "heroTitle": "Contact Us",
+    "heroText": "Placeholder: an invitation to get in touch. Replace with approved copy."
   }
 }

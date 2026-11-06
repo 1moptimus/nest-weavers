@@ -1,0 +1,65 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { CONTACT } from '../lib/site.js';
+
+const page = await getEntry('pages', 'contact-us');
+if (!page) throw new Error('Missing "contact-us" entry in src/content/pages/pages.json');
+const { heroTitle, heroText } = page.data;
+
+// The form posts to a third-party endpoint (no backend). Set PUBLIC_FORM_ENDPOINT in .env / Cloudflare Pages.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined;
+
+const field =
+  'mt-1 w-full rounded-md border border-[var(--color-ink-muted)] bg-white px-3 py-2.5 text-base focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]';
+---
+
+<BaseLayout title={heroTitle} description={heroText}>
+  <PageIntro title={heroTitle} text={heroText} />
+  <section class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 md:grid-cols-2 md:gap-12">
+    <div>
+      <h2 class="text-xl sm:text-2xl">Studio details</h2>
+      <address class="mt-4 grid gap-2 not-italic">
+        <p>{CONTACT.address}</p>
+        <p>{CONTACT.phone}</p>
+        <p>{CONTACT.email}</p>
+        <p>{CONTACT.hours}</p>
+      </address>
+    </div>
+
+    <form method="post" action={endpoint} class="grid gap-4">
+      <h2 class="text-xl sm:text-2xl">Send us a message</h2>
+      <label class="block">
+        <span class="text-sm">Your name</span>
+        <input class={field} type="text" name="name" autocomplete="name" required />
+      </label>
+      <label class="block">
+        <span class="text-sm">Email</span>
+        <input class={field} type="email" name="email" autocomplete="email" required />
+      </label>
+      <label class="block">
+        <span class="text-sm">Phone (optional)</span>
+        <input class={field} type="tel" name="phone" autocomplete="tel" />
+      </label>
+      <label class="block">
+        <span class="text-sm">How can we help?</span>
+        <textarea class={field} name="message" rows="5" required></textarea>
+      </label>
+      <button
+        type="submit"
+        disabled={!endpoint}
+        class="rounded-md bg-[var(--color-ink)] px-6 py-3 text-[var(--color-surface)] enabled:hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+      >
+        Send message
+      </button>
+      {
+        !endpoint && (
+          <p class="text-sm text-[var(--color-ink-muted)]" role="note">
+            Form not connected yet: set PUBLIC_FORM_ENDPOINT to enable sending.
+          </p>
+        )
+      }
+    </form>
+  </section>
+</BaseLayout>

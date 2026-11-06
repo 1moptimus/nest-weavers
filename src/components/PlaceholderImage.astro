@@ -1,0 +1,19 @@
+---
+// Clearly marked stand-in for a photograph that the client has not supplied yet.
+// Replace with an astro:assets <Image> (via the content collections) once real photos exist.
+interface Props {
+  label?: string;
+  /** Tailwind aspect-ratio class, e.g. "aspect-[4/3]". */
+  aspect?: string;
+}
+
+const { label = 'Placeholder photo', aspect = 'aspect-[4/3]' } = Astro.props;
+---
+
+<div
+  class={`grid ${aspect} place-items-center rounded-lg border-2 border-dashed border-[var(--color-accent-brown)] bg-white/60 p-4 text-center text-sm text-[var(--color-accent-brown-dark)]`}
+  role="img"
+  aria-label={label}
+>
+  <span>{label}</span>
+</div>
