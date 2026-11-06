@@ -25,6 +25,14 @@ collections:
       - { label: Title, name: title, widget: string, hint: "Project name shown on the site." }
       - { label: Summary, name: summary, widget: text, hint: "One or two sentences shown on the project card." }
       - { label: Location, name: location, widget: string, hint: "City, or city and country." }
+      - { label: Neighbourhood, name: area, widget: string, required: false, hint: "Area shown on the map, e.g. Jubilee Hills." }
+      - label: Map position
+        name: coordinates
+        widget: object
+        hint: "Pin position on the Hyderabad map. In Google Maps, right-click the building and copy the two numbers (latitude, longitude)."
+        fields:
+          - { label: Latitude, name: lat, widget: number, value_type: float, min: -90, max: 90 }
+          - { label: Longitude, name: lng, widget: number, value_type: float, min: -180, max: 180 }
       - { label: Year, name: year, widget: number, value_type: int, min: 1990, max: 2100 }
       - { label: Category, name: category, widget: string, hint: "e.g. Residential, Commercial, Hospitality." }
       - label: Cover image

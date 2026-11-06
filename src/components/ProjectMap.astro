@@ -1,0 +1,107 @@
+---
+// Hyderabad map with one pin per published project. Server-rendered, no JS needed.
+// Pins are real links to the project's entry in the list below the map (#slug).
+import type { CollectionEntry } from 'astro:content';
+import mapSvg from '../assets/hyderabad-map.svg?raw';
+import { toPercent } from '../lib/mapProjection.js';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+}
+
+const { projects } = Astro.props;
+const pins = projects.map((p) => ({
+  id: p.id,
+  title: p.data.title,
+  summary: p.data.summary,
+  place: p.data.area ? `${p.data.area}, ${p.data.location}` : p.data.location,
+  ...toPercent(p.data.coordinates.lat, p.data.coordinates.lng),
+}));
+---
+
+<figure class="project-map">
+  <div class="project-map__canvas">
+    <Fragment set:html={mapSvg} />
+    {
+      pins.map((pin) => (
+        <a
+          class="project-map__pin"
+          href={`#${pin.id}`}
+          style={`left:${pin.left}%;top:${pin.top}%`}
+          aria-label={`${pin.title}, ${pin.place}`}
+        >
+          <span class="project-map__card" aria-hidden="true">
+            <strong>{pin.title}</strong>
+            <span>{pin.place}</span>
+          </span>
+        </a>
+      ))
+    }
+  </div>
+  <figcaption class="project-map__credit">
+    Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors
+  </figcaption>
+</figure>
+
+<style>
+  .project-map {
+    margin: 0;
+  }
+  .project-map__canvas {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin-inline: auto;
+  }
+  .project-map__canvas :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .project-map__pin {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    /* 44px minimum tap target, visual pin is smaller */
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-pin);
+    border: 2px solid var(--color-pin-outline);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  }
+  .project-map__pin:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+  .project-map__card {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 12rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.15);
+    display: none;
+    font-size: 0.875rem;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .project-map__pin:hover .project-map__card,
+  .project-map__pin:focus-visible .project-map__card {
+    display: block;
+  }
+  .project-map__credit {
+    font-size: 0.75rem;
+    color: var(--color-ink-muted);
+    text-align: right;
+    margin-top: 0.5rem;
+  }
+  .project-map__credit a {
+    color: inherit;
+  }
+</style>

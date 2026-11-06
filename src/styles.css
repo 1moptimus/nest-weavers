@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+/*
+ * Brand tokens. Values are PROVISIONAL, read by eye from the brand PDF (p.10 colour swatches).
+ * Confirm the exact hex codes with the client before launch.
+ */
+@theme {
+  --color-surface: #efeae6; /* warm off-white */
+  --color-ink: #2b2623; /* body text; near-black for contrast */
+  --color-ink-muted: #6b625b;
+  --color-accent-sky: #a2bfe2; /* bird colour; use as accent, not text */
+  --color-accent-brown: #90775a; /* large text and graphics only (fails AA for small text on off-white) */
+  --color-pin: #90775a;
+  --color-pin-outline: #2b2623;
+  --color-focus: #2b2623;
+  --color-map-water: #a2bfe2;
+  --color-map-road: #d9d2cb;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}

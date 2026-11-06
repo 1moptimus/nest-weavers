@@ -11,6 +11,8 @@ const projects = defineCollection({
       title: z.string(),
       summary: z.string(),
       location: z.string(),
+      area: z.string().optional(), // neighbourhood shown on the map card, e.g. "Jubilee Hills"
+      coordinates: z.object({ lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) }),
       year: z.number().int(),
       category: z.string(),
       cover: image().optional(),
