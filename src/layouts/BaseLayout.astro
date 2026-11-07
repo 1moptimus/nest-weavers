@@ -15,7 +15,9 @@ interface Props {
 
 const { title, description } = Astro.props;
 const fullTitle = title === SITE.name ? title : `${title} | ${SITE.name}`;
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : undefined;
 ---
 
 <!doctype html>
@@ -29,15 +31,28 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#efeae6" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f0e0d" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="theme-color"
+      content="#efeae6"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0f0e0d"
+      media="(prefers-color-scheme: dark)"
+    />
     <!-- Set the theme before first paint (saved choice, else the device setting) so there is no flash. -->
     <script is:inline>
       (function () {
         var theme = 'light';
         try {
           var saved = localStorage.getItem('theme');
-          theme = saved === 'light' || saved === 'dark' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          theme =
+            saved === 'light' || saved === 'dark'
+              ? saved
+              : matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
         } catch (e) {}
         document.documentElement.dataset.theme = theme;
       })();
@@ -59,3 +74,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
     <Footer />
   </body>
 </html>
+
+<script>
+  import '../scripts/birdCursor';
+</script>

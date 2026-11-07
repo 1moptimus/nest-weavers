@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /*
  * Brand constants (identical in both modes).
@@ -29,7 +29,9 @@
   --color-field: #ffffff;
   --color-line: rgb(43 38 35 / 0.12);
   --color-accent-text: #725540; /* brown that passes AA for small text */
-  --color-pin: #926d52;
+  --color-pin: #c2410c; /* high-contrast terracotta so projects stand out on the map */
+  --color-pin-core: #ffffff;
+  --color-pin-ring: #ffffff;
   --color-pin-outline: #2b2623;
   --color-focus: #2b2623;
   --card-shadow: 0 1px 2px rgb(43 38 35 / 0.06);
@@ -67,6 +69,9 @@
   --color-field: #1b1917;
   --color-line: rgb(239 234 230 / 0.14);
   --color-accent-text: #cfae8e;
+  --color-pin: #ff7a45;
+  --color-pin-core: #151311;
+  --color-pin-ring: #151311;
   --color-pin-outline: #efeae6;
   --color-focus: #efeae6;
   --card-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
@@ -123,10 +128,18 @@ body {
 }
 /* Optional: fade the pattern out toward the edges of the element. */
 .has-pattern--fade::before {
-  -webkit-mask-image: url('./assets/brand/pattern-lines.png'), radial-gradient(ellipse at center, #000 30%, transparent 100%);
-  mask-image: url('./assets/brand/pattern-lines.png'), radial-gradient(ellipse at center, #000 30%, transparent 100%);
-  -webkit-mask-size: 252px 175px, 100% 100%;
-  mask-size: 252px 175px, 100% 100%;
+  -webkit-mask-image:
+    url('./assets/brand/pattern-lines.png'),
+    radial-gradient(ellipse at center, #000 30%, transparent 100%);
+  mask-image:
+    url('./assets/brand/pattern-lines.png'),
+    radial-gradient(ellipse at center, #000 30%, transparent 100%);
+  -webkit-mask-size:
+    252px 175px,
+    100% 100%;
+  mask-size:
+    252px 175px,
+    100% 100%;
   -webkit-mask-repeat: repeat, no-repeat;
   mask-repeat: repeat, no-repeat;
   -webkit-mask-composite: source-in;
@@ -173,42 +186,121 @@ body {
  * Hotspot (1, 18) is the beak tip. Touch devices have no cursor, so they are unaffected.
  * Text fields keep the native text cursor so editing stays usable; if an image fails to load the browser falls back.
  */
+/* Animated bird (src/scripts/birdCursor.ts) takes over once it is running; the native cursor is hidden except in text fields. */
+html.bird-on,
+html.bird-on * {
+  cursor: none !important;
+}
+html.bird-on
+  :is(
+    input:not(
+      [type='checkbox'],
+      [type='radio'],
+      [type='submit'],
+      [type='button']
+    ),
+    textarea,
+    [contenteditable='true']
+  ) {
+  cursor: text !important;
+}
+.bird-cursor {
+  position: fixed;
+  inset: auto;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  z-index: 2147483647;
+  width: 32px;
+  height: 31px;
+  pointer-events: none;
+  background: url('/cursor/bird.png') no-repeat center / contain;
+  transform-origin: 1px 18px; /* beak tip */
+  opacity: 0;
+  transition: opacity 0.2s;
+  will-change: transform;
+}
+:root[data-theme='dark'] .bird-cursor {
+  background-image: url('/cursor/bird-light.png');
+}
+.bird-cursor.is-visible:not(.is-hidden) {
+  opacity: 1;
+}
+
 @media (hover: hover) and (pointer: fine) {
   html {
-    cursor: url("/cursor/bird.png") 1 18, auto;
-    cursor: image-set(url("/cursor/bird.png") 1x, url("/cursor/bird@2x.png") 2x) 1 18, auto;
+    cursor:
+      url('/cursor/bird.png') 1 18,
+      auto;
+    cursor:
+      image-set(url('/cursor/bird.png') 1x, url('/cursor/bird@2x.png') 2x) 1 18,
+      auto;
   }
   a,
   button,
   summary,
   select,
   label,
-  [role="button"] {
-    cursor: url("/cursor/bird.png") 1 18, pointer;
-    cursor: image-set(url("/cursor/bird.png") 1x, url("/cursor/bird@2x.png") 2x) 1 18, pointer;
+  [role='button'] {
+    cursor:
+      url('/cursor/bird.png') 1 18,
+      pointer;
+    cursor:
+      image-set(url('/cursor/bird.png') 1x, url('/cursor/bird@2x.png') 2x) 1 18,
+      pointer;
   }
-  input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"]),
+  input:not(
+    [type='checkbox'],
+    [type='radio'],
+    [type='submit'],
+    [type='button']
+  ),
   textarea,
-  [contenteditable="true"] {
+  [contenteditable='true'] {
     cursor: text;
   }
   /* Dark mode: the same bird with a light outline, so it stays visible on dark backgrounds. */
   :root[data-theme='dark'] {
-    cursor: url("/cursor/bird-light.png") 1 18, auto;
-    cursor: image-set(url("/cursor/bird-light.png") 1x, url("/cursor/bird-light@2x.png") 2x) 1 18, auto;
+    cursor:
+      url('/cursor/bird-light.png') 1 18,
+      auto;
+    cursor:
+      image-set(
+          url('/cursor/bird-light.png') 1x,
+          url('/cursor/bird-light@2x.png') 2x
+        )
+        1 18,
+      auto;
   }
   :root[data-theme='dark'] a,
   :root[data-theme='dark'] button,
   :root[data-theme='dark'] summary,
   :root[data-theme='dark'] select,
   :root[data-theme='dark'] label,
-  :root[data-theme='dark'] [role="button"] {
-    cursor: url("/cursor/bird-light.png") 1 18, pointer;
-    cursor: image-set(url("/cursor/bird-light.png") 1x, url("/cursor/bird-light@2x.png") 2x) 1 18, pointer;
+  :root[data-theme='dark'] [role='button'] {
+    cursor:
+      url('/cursor/bird-light.png') 1 18,
+      pointer;
+    cursor:
+      image-set(
+          url('/cursor/bird-light.png') 1x,
+          url('/cursor/bird-light@2x.png') 2x
+        )
+        1 18,
+      pointer;
   }
-  :root[data-theme='dark'] input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"]),
+  :root[data-theme='dark']
+    input:not(
+      [type='checkbox'],
+      [type='radio'],
+      [type='submit'],
+      [type='button']
+    ),
   :root[data-theme='dark'] textarea,
-  :root[data-theme='dark'] [contenteditable="true"] {
+  :root[data-theme='dark'] [contenteditable='true'] {
     cursor: text;
   }
 }

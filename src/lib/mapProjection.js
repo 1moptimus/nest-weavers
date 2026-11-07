@@ -3,7 +3,7 @@
 // so pins always line up with the drawn map.
 
 // Geographic window covered by the map (degrees). Keep in sync with the generated SVG.
-export const BOUNDS = { north: 17.57, south: 17.3, west: 78.2, east: 78.7 };
+export const BOUNDS = { north: 17.525, south: 17.43, west: 78.19, east: 78.41 };
 export const MAP_WIDTH = 1000; // SVG viewBox width; height is derived from the Mercator aspect.
 
 const toRad = (deg) => (deg * Math.PI) / 180;
@@ -18,7 +18,7 @@ export const MAP_HEIGHT = Math.round(MAP_WIDTH * ((yTop - yBottom) / xSpan));
 
 /** Converts lat/lng to viewBox coordinates {x, y} in 0..MAP_WIDTH / 0..MAP_HEIGHT. */
 export function project(lat, lng) {
-  const x = ((toRad(lng - BOUNDS.west)) / xSpan) * MAP_WIDTH;
+  const x = (toRad(lng - BOUNDS.west) / xSpan) * MAP_WIDTH;
   const y = ((yTop - mercatorY(lat)) / (yTop - yBottom)) * MAP_HEIGHT;
   return { x: Number(x.toFixed(2)), y: Number(y.toFixed(2)) };
 }

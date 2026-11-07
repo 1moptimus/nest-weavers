@@ -16,7 +16,7 @@ const query = `[out:json][timeout:60];
   way["natural"="water"](${bbox});
   relation["natural"="water"](${bbox});
   way["waterway"="river"](${bbox});
-  way["highway"~"^(motorway|trunk|primary)$"](${bbox});
+  way["highway"~"^(motorway|trunk|primary|secondary)$"](${bbox});
 );
 out geom;`;
 
@@ -93,7 +93,7 @@ function bboxArea(pts) {
   return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys));
 }
 
-const ways = { water: [], river: [], motorway: [], trunk: [], primary: [] };
+const ways = { water: [], river: [], motorway: [], trunk: [], primary: [], secondary: [] };
 
 for (const el of elements) {
   if (el.type !== 'relation' || !el.members) continue;
@@ -139,6 +139,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MAP_WIDTH} $
     ${path(ways.river, '')}
   </g>
   <g fill="none" stroke="var(--color-map-road, #D9D2CB)" stroke-linecap="round" stroke-linejoin="round">
+    ${path(ways.secondary, 'stroke-width="1.4"')}
     ${path(ways.primary, 'stroke-width="2"')}
     ${path(ways.trunk, 'stroke-width="3"')}
     ${path(ways.motorway, 'stroke-width="4"')}

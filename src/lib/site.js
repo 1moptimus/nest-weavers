@@ -17,15 +17,28 @@ export const NAV = [
 
 /** @type {{ name: string, href: string, icon: 'instagram' | 'youtube' }[]} */
 export const SOCIAL = [
-  { name: 'Instagram', href: 'https://www.instagram.com/nestweavers_interiors/', icon: 'instagram' },
-  { name: 'YouTube', href: 'https://www.youtube.com/@nestweavers3377', icon: 'youtube' },
+  {
+    name: 'Instagram',
+    href: 'https://www.instagram.com/nestweavers_interiors/',
+    icon: 'instagram',
+  },
+  {
+    name: 'YouTube',
+    href: 'https://www.youtube.com/@nestweavers3377',
+    icon: 'youtube',
+  },
 ];
 
-// Address, email and hours are PLACEHOLDERS: replace with the client's real details before launch.
+// Office address, hours and email are the client's.
 export const CONTACT = {
-  address: '[Placeholder: studio address], Hyderabad',
+  address: 'Nest Weavers office, F6HQ+FW Velmala, Telangana',
+  // Pin position of the office on the home page map.
+  coordinates: { lat: 17.47866713291561, lng: 78.23987305087319 },
+  // Opens Google Maps on the exact office coordinates above (the short maps.app.goo.gl link did not resolve).
+  // Used by the map pin, Contact page and footer.
+  mapUrl: 'https://www.google.com/maps/search/?api=1&query=17.47866713291561,78.23987305087319',
   // From the client's pitch deck.
   phones: ['+91-8919487650', '+91-9398676968'],
-  email: '[Placeholder: email address]',
-  hours: '[Placeholder: opening hours]',
+  email: 'nestweaversgroup@gmail.com',
+  hours: 'Open 10:00 am to 7:00 pm',
 };

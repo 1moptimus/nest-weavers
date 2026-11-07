@@ -6,23 +6,31 @@ import PageSections from '../components/PageSections.astro';
 import PlaceholderImage from '../components/PlaceholderImage.astro';
 
 const page = await getEntry('pages', 'about-us');
-if (!page) throw new Error('Missing "about-us" entry in src/content/pages/pages.json');
+if (!page)
+  throw new Error('Missing "about-us" entry in src/content/pages/pages.json');
 const { heroTitle, heroText, sections } = page.data;
 ---
 
 <BaseLayout title={heroTitle} description={heroText}>
   <PageHero title={heroTitle} text={heroText} />
-  <section class="mx-auto grid max-w-6xl gap-8 px-4 pt-14 sm:px-6 sm:pt-20 md:grid-cols-2 md:items-center md:gap-12">
-    <PlaceholderImage label="Placeholder photo: studio or founders" aspect="aspect-[4/5]" />
+  <section
+    class="mx-auto grid max-w-6xl gap-8 px-4 pt-14 sm:px-6 sm:pt-20 md:grid-cols-2 md:items-center md:gap-12"
+  >
+    <PlaceholderImage
+      label="Placeholder photo: studio or founders"
+      aspect="aspect-[4/5]"
+    />
     <div class="space-y-4">
       <h2 class="font-serif text-2xl sm:text-3xl">Placeholder: our story</h2>
       <p>
-        Placeholder paragraph. The client will supply the story of how Nest Weavers began, what the studio
-        believes in, and how the team works with homeowners.
+        Placeholder paragraph. The client will supply the story of how Nest
+        Weavers began, what the studio believes in, and how the team works with
+        homeowners.
       </p>
       <p>
-        Placeholder paragraph. A second block of copy can cover the design approach: earthy materials, natural
-        light, and spaces that feel lived in.
+        Placeholder paragraph. A second block of copy can cover the design
+        approach: earthy materials, natural light, and spaces that feel lived
+        in.
       </p>
     </div>
   </section>

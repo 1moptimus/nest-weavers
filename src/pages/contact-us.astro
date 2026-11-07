@@ -6,7 +6,8 @@ import PageSections from '../components/PageSections.astro';
 import { CONTACT } from '../lib/site.js';
 
 const page = await getEntry('pages', 'contact-us');
-if (!page) throw new Error('Missing "contact-us" entry in src/content/pages/pages.json');
+if (!page)
+  throw new Error('Missing "contact-us" entry in src/content/pages/pages.json');
 const { heroTitle, heroText, sections } = page.data;
 
 // The form posts to a third-party endpoint (no backend). Set PUBLIC_FORM_ENDPOINT in .env / Cloudflare Pages.
@@ -18,13 +19,41 @@ const field =
 
 <BaseLayout title={heroTitle} description={heroText}>
   <PageHero title={heroTitle} text={heroText} />
-  <section class="mx-auto grid max-w-6xl gap-10 px-4 pt-14 sm:px-6 sm:pt-20 md:grid-cols-2 md:gap-12">
+  <section
+    class="mx-auto grid max-w-6xl gap-10 px-4 pt-14 sm:px-6 sm:pt-20 md:grid-cols-2 md:gap-12"
+  >
     <div>
       <h2 class="font-serif text-2xl sm:text-3xl">Studio details</h2>
       <address class="mt-4 grid gap-2 not-italic">
-        <p>{CONTACT.address}</p>
-        {CONTACT.phones.map((n) => <p><a href={`tel:${n.replace(/[^+\d]/g, '')}`} class="underline-offset-4 hover:underline">{n}</a></p>)}
-        <p>{CONTACT.email}</p>
+        <p>
+          {CONTACT.address}
+          <br />
+          <a
+            href={CONTACT.mapUrl}
+            rel="noopener"
+            target="_blank"
+            class="underline underline-offset-4"
+          >
+            Get directions<span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        </p>
+        {
+          CONTACT.phones.map((n) => (
+            <p>
+              <a
+                href={`tel:${n.replace(/[^+\d]/g, '')}`}
+                class="underline-offset-4 hover:underline"
+              >
+                {n}
+              </a>
+            </p>
+          ))
+        }
+        <p>
+          <a
+            href={`mailto:${CONTACT.email}`}
+            class="underline-offset-4 hover:underline">{CONTACT.email}</a>
+        </p>
         <p>{CONTACT.hours}</p>
       </address>
     </div>
@@ -33,11 +62,23 @@ const field =
       <h2 class="font-serif text-2xl sm:text-3xl">Send us a message</h2>
       <label class="block">
         <span class="text-sm">Your name</span>
-        <input class={field} type="text" name="name" autocomplete="name" required />
+        <input
+          class={field}
+          type="text"
+          name="name"
+          autocomplete="name"
+          required
+        />
       </label>
       <label class="block">
         <span class="text-sm">Email</span>
-        <input class={field} type="email" name="email" autocomplete="email" required />
+        <input
+          class={field}
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+        />
       </label>
       <label class="block">
         <span class="text-sm">Phone (optional)</span>

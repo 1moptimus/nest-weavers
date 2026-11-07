@@ -14,7 +14,12 @@ const year = new Date().getFullYear();
         {
           SOCIAL.map((s) => (
             <li>
-              <a href={s.href} rel="noopener" target="_blank" aria-label={`${s.name} (opens in a new tab)`}>
+              <a
+                href={s.href}
+                rel="noopener"
+                target="_blank"
+                aria-label={`${s.name} (opens in a new tab)`}
+              >
                 <SocialIcon name={s.icon} />
               </a>
             </li>
@@ -26,16 +31,43 @@ const year = new Date().getFullYear();
     <nav aria-label="Footer">
       <h2>Explore</h2>
       <ul>
-        {NAV.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 
     <div>
       <h2>Contact</h2>
       <address>
-        <p>{CONTACT.address}</p>
-        {CONTACT.phones.map((n) => <p><a href={`tel:${n.replace(/[^+\d]/g, '')}`}>{n}</a></p>)}
-        <p>{CONTACT.email}</p>
+        <p>
+          {CONTACT.address}
+          <br />
+          <a
+            href={CONTACT.mapUrl}
+            rel="noopener"
+            target="_blank"
+            class="underline underline-offset-4"
+          >
+            Get directions<span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        </p>
+        {
+          CONTACT.phones.map((n) => (
+            <p>
+              <a href={`tel:${n.replace(/[^+\d]/g, '')}`}>{n}</a>
+            </p>
+          ))
+        }
+        <p>
+          <a
+            href={`mailto:${CONTACT.email}`}
+            class="underline-offset-4 hover:underline">{CONTACT.email}</a>
+        </p>
         <p>{CONTACT.hours}</p>
       </address>
     </div>

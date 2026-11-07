@@ -5,7 +5,8 @@ import PageHero from '../components/PageHero.astro';
 import PageSections from '../components/PageSections.astro';
 
 const page = await getEntry('pages', 'why-us');
-if (!page) throw new Error('Missing "why-us" entry in src/content/pages/pages.json');
+if (!page)
+  throw new Error('Missing "why-us" entry in src/content/pages/pages.json');
 const { heroTitle, heroText, sections } = page.data;
 ---
 

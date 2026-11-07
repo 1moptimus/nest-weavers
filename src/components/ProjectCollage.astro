@@ -1,0 +1,99 @@
+---
+// Masonry collage of a project's photos (natural aspect ratios, no cropping).
+// With `lightbox`, each photo links to its large version and is picked up by the page's lightbox script.
+import { Image } from 'astro:assets';
+import type { ProjectPhoto } from '../lib/projectPhotos';
+
+interface Props {
+  photos: ProjectPhoto[];
+  lightbox?: boolean;
+  sizes?: string;
+}
+
+const {
+  photos,
+  lightbox = false,
+  sizes = '(min-width: 1024px) 360px, (min-width: 640px) 45vw, 100vw',
+} = Astro.props;
+---
+
+<ul class="collage">
+  {
+    photos.map((p, i) => (
+      <li>
+        {lightbox ? (
+          <a
+            href={p.full}
+            class="collage__photo"
+            data-lightbox
+            data-alt={p.alt}
+          >
+            <Image
+              src={p.img}
+              alt={p.alt}
+              widths={[480, 800, 1200]}
+              sizes={sizes}
+              loading={i < 2 ? 'eager' : 'lazy'}
+            />
+          </a>
+        ) : (
+          <Image
+            src={p.img}
+            alt={p.alt}
+            widths={[480, 800, 1200]}
+            sizes={sizes}
+            loading="lazy"
+            class="collage__photo"
+          />
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .collage {
+    column-count: 1;
+    column-gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (min-width: 640px) {
+    .collage {
+      column-count: 2;
+    }
+  }
+  @media (min-width: 1024px) {
+    .collage {
+      column-count: 3;
+    }
+  }
+  .collage li {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+  .collage :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .collage__photo {
+    display: block;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+  }
+  a.collage__photo:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .collage :global(img) {
+      transition: transform 0.4s ease;
+    }
+    a.collage__photo:hover :global(img) {
+      transform: scale(1.03);
+    }
+  }
+</style>

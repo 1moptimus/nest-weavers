@@ -1,0 +1,173 @@
+---
+// Project detail page: facts, description and photo gallery with a lightweight lightbox (<dialog>, no framework).
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ProjectCollage from '../../components/ProjectCollage.astro';
+import { getProjectPhotos } from '../../lib/projectPhotos';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', (p) => !p.data.draft);
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, summary, area, location, year, category } = project.data;
+const { Content } = await render(project);
+const place = area ? `${area}, ${location}` : location;
+
+const photos = await getProjectPhotos(project);
+---
+
+<BaseLayout title={title} description={summary}>
+  <PageHero title={title} text={summary} eyebrow={`${category} · ${place}`} />
+
+  <div class="mx-auto max-w-6xl px-4 pt-10 sm:px-6 sm:pt-14">
+    <a href="/#list-heading" class="back-link text-sm">← All projects</a>
+
+    <dl class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div><dt class="meta-label">Location</dt><dd>{place}</dd></div>
+      <div><dt class="meta-label">Year</dt><dd>{year}</dd></div>
+      <div><dt class="meta-label">Category</dt><dd>{category}</dd></div>
+    </dl>
+
+    <div class="mt-8 max-w-3xl"><Content /></div>
+  </div>
+
+  {
+    photos.length > 0 && (
+      <section
+        class="mx-auto max-w-6xl px-4 pt-12 pb-4 sm:px-6 sm:pt-16"
+        aria-label={`${title} photos`}
+      >
+        <ProjectCollage photos={photos} lightbox />
+      </section>
+    )
+  }
+
+  <dialog id="lightbox" class="lightbox" aria-label="Photo viewer">
+    <form method="dialog">
+      <button class="lightbox__close" aria-label="Close photo">×</button>
+    </form>
+    <button
+      class="lightbox__nav lightbox__prev"
+      aria-label="Previous photo"
+      type="button">‹</button
+    >
+    <img alt="" />
+    <button
+      class="lightbox__nav lightbox__next"
+      aria-label="Next photo"
+      type="button">›</button
+    >
+  </dialog>
+</BaseLayout>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#lightbox');
+  const links = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>('[data-lightbox]'),
+  );
+  if (dialog && links.length) {
+    const img = dialog.querySelector('img')!;
+    let index = 0;
+    const show = (i: number) => {
+      index = (i + links.length) % links.length;
+      img.src = links[index].href;
+      img.alt = links[index].dataset.alt ?? '';
+    };
+    links.forEach((a, i) =>
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        show(i);
+        dialog.showModal();
+      }),
+    );
+    dialog
+      .querySelector('.lightbox__prev')!
+      .addEventListener('click', () => show(index - 1));
+    dialog
+      .querySelector('.lightbox__next')!
+      .addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+    // Click on the backdrop closes the viewer.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  }
+</script>
+
+<style>
+  .back-link {
+    color: var(--color-ink-muted);
+  }
+  .back-link:hover {
+    color: var(--color-ink);
+  }
+  .meta-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .lightbox {
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: rgb(0 0 0 / 0.92);
+    color: #fff;
+  }
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+  .lightbox__close,
+  .lightbox__nav {
+    position: absolute;
+    background: rgb(255 255 255 / 0.12);
+    color: #fff;
+    border: 0;
+    border-radius: 999px;
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .lightbox__close {
+    top: 1rem;
+    right: 1rem;
+  }
+  .lightbox__nav {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lightbox__prev {
+    left: 1rem;
+  }
+  .lightbox__next {
+    right: 1rem;
+  }
+  .lightbox button:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
+</style>
